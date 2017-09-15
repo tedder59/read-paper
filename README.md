@@ -16,7 +16,7 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
 《Rich feature hierarchies for accurate object detection and semantic segmentation》
 - 摘要：
 
-  1.使用卷积神经网络做region proposal对输入图像中的物体进行分割和定位。
+  1.先计算region proposal，再通过卷积神经网络对输入图像中的物体进行分割和定位。
   
   2.标注数据不足时，使用辅助任务的预训练网络做fine-tuning能够得到很好的效果。
 - 引言：
@@ -38,6 +38,26 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
   8.理解检测失败的模型是提升算法模型的关键，simple bounding box regression是本算法模型的检测失败的关键。
   
   9.R-CNN用于regions proposal，经过小小修改后用于语义分割（semantic segmentation）也取得了不错的成绩。
-- R-CNN的组成模块
+- R-CNN物体检测
+  - 模块设计
+  
+    1.Region proposal : selective search(很草率的选择)
+    
+    2.Feature extraction : CNN(Krizhevsky - 5 convolution + 2 fc)
+    
+    3.Class-specific linear SVMs
+  - 前向过程
+    1."fast mode" elective search 从输入图片提取2000个region proposals。
+    
+    2.所有region proposals作为输入，使用CNN从region中提取feature vectors。
+    
+    3.对于每个feature vector计算各个分类的SVM。
+    
+    4.计算非极大值，在重叠的region中留下大于learned threshold的最大的那个
+  - 性能分析
+    1.对于所有分类，卷积核的权值都是共享的，使用参数量少，内存占用少。
+    
+    2.卷积层计算的特征向量都是low-dimentional，计算速度快。
+  - 训练
 
   
