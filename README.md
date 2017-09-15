@@ -47,6 +47,7 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
     
     3.Class-specific linear SVMs
   - 前向过程
+  
     1."fast mode" elective search 从输入图片提取2000个region proposals。
     
     2.所有region proposals作为输入，使用CNN从region中提取feature vectors。
@@ -55,9 +56,18 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
     
     4.计算非极大值，在重叠的region中留下大于learned threshold的最大的那个
   - 性能分析
+  
     1.对于所有分类，卷积核的权值都是共享的，使用参数量少，内存占用少。
     
     2.卷积层计算的特征向量都是low-dimentional，计算速度快。
   - 训练
+  
+    1.在ILSVRC2012数据集上训练CNN网络。
+    
+    2.使用从VOC数据集的提取出的region proposals数据作为输入，采用SGD训练CNN网络参数。
+    
+    注：在第二步训练前先替换掉第一步CNN网络的最后一个FC，从1000路分类输出换成21路分类输出
+    
+    3.
 
   
