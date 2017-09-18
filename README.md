@@ -33,7 +33,7 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
   
   6.计算效率高，region features在经过两次降维后用于计算非极大值抑制（对于所有的分类结果可以共享）和分类计算。
   
-  7.卷积层学习了丰富的特征，而且这些特征不可理解；大量的参数都可以删除，对物体检测的准确率仅有一点点下降。
+  7.卷积层学习了丰富的特征，而且这些特征不可理解；删除94%参数时，对物体检测的准确率仅有一点点下降。
   
   8.理解检测失败的模型是提升算法模型的关键，simple bounding box regression是本算法模型的检测失败的关键。
   
@@ -64,10 +64,9 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
   
     1.在ILSVRC2012数据集上训练CNN网络。
     
-    2.使用从VOC数据集的提取出的region proposals数据作为输入，采用SGD训练CNN网络参数。
+    2.使用从VOC数据集的提取出的region proposals数据作为输入，采用SGD训练CNN网络参数。先使用随机初始化的21路分类输出替换掉第一步的1000路分类输出，batch_size=128（其中正例32个，反例96个）。
     
-    注：在第二步训练前先替换掉第一步CNN网络的最后一个FC，从1000路分类输出换成21路分类输出
-    
-    3.
+    3.使用IoU threshold解决region部分覆盖物体的问题，大于threshold判为正例，小于threshold判为反例。当特征提取出来之后使用hard negative mining method方法优化线性SVM。
+- 
 
   
