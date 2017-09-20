@@ -21,9 +21,9 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
   2.标注数据不足时，使用辅助任务的预训练网络做fine-tuning能够得到很好的效果。
 - 引言：
 
-  1.SIFT和HOG不适合neocognitron的认识层次，使用CNN能够获得认知层次模型，并保证了位移不变性。
+  1.使用CNN能够符合认知层次模型，并保证了位移不变性。
   
-  2.使用“Recognition using regions"解决定位问题。
+  2.使用Regions解决定位问题。
   
   3.从每个proposal中计算出一个固定长度的特征向量，将其输入到分类SVM中得到结果。
   
@@ -41,9 +41,9 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
 - R-CNN物体检测
   - 模块设计
   
-    1.Region proposal : selective search(很草率的选择)
+    1.Region proposal : selective search
     
-    2.Feature extraction : CNN(Krizhevsky - 5 convolution + 2 fc)
+    2.Feature extraction : CNN(AlexNet - 5 convolution + 2 fc)
     
     3.Class-specific linear SVMs
   - 前向过程
@@ -62,11 +62,35 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
     2.卷积层计算的特征向量都是low-dimentional，计算速度快。
   - 训练
   
-    1.在ILSVRC2012数据集上训练CNN网络。
+    1.在ILSVRC2012数据集上训练AlexNet网络，训练结果:top1错误率比Krizhevsky高2.2%。
     
-    2.使用从VOC数据集的提取出的region proposals数据作为输入，采用SGD训练CNN网络参数。先使用随机初始化的21路分类输出替换掉第一步的1000路分类输出，batch_size=128（其中正例32个，反例96个）。
+    2.替换AlexNet最后的1000路分类输出fc为VOC数据集的21路分类输出，随机初始化fc的参数。
     
-    3.使用IoU threshold解决region部分覆盖物体的问题，大于threshold判为正例，小于threshold判为反例。当特征提取出来之后使用hard negative mining method方法优化线性SVM。
-- 
+    3.改装region proposals作为fine-tuning输入，其中与标注box有>=0.5的IoU重叠的为正例，其他的为反例。
+    
+    4.fine-tuning采用SGD，学习率为0.001（pre-training学习率的1/10）;batch_size=128（其中有分类的标注32个，背景标注96个）。
+    
+    5.SVM训练需要数据量要少于CNN，overlap的策略采用>=0.7的IoU重叠为正例时的准确率最高。
+    
+    6.使用Standard hard negative mining method来对每个分类的SVM进行调优。
+- 特征可视化
+
+  1.第一层卷积的特征值可以直接看到和被理解，他主要用来捕捉边缘和对比的颜色。
+  
+  2.Zeiler和Fergus提出了使用deconvolutional方法来显示特征值。
+  
+  3.在千万个留存的region proposals上计算特征单元的activation，得分高的region和特征相关。
+  
+  4.pool5中的特征单元能够识别小部分特性的集合，例如形状、文本、颜色和材料等，fc6能够将这些特性再集合成model。
+- 阶段分离参数分析
+
+  1.在没有fine-tuning时，CNN的识别能力主要来自于卷积层而不是fc层。
+  
+  2.在fine-tuning后，fc提供了主要的性能提升。
+- 错误分析
+  1.Hoiem分析工具发现主要的错误模式时定位不准确导致的。
+  
+  2.使用Bounding box regression
+  
 
   
