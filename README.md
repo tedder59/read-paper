@@ -94,7 +94,7 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
   2.使用Bounding box regression方法，训练了一个线性回归的模型用来根据pool5的features预测一个新的检测窗口给selective search做region proposal。
 - 语义分割
 
-  1.当前O2P——second-order pooling是语义分割领域中最好的系统，他使用CMPC和SVR。
+  1.当前O2P—second-order pooling是语义分割领域中最好的系统，他使用CMPC和SVR。
   
   2.计算CNN的特征在CMPC的regions上的结果，分别有三个策略：忽略region的大小和形状，和物体检测时一样，使用wrap之后的region计算，这样可能的问题时两个region虽然只有很少的重叠，但是会有相似的bounding box；第二种策略，只计算region的前景色，背景色部分设置为0或者均值；第三种策略就是结合前两种策略。
   
