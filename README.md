@@ -94,11 +94,11 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
   2.使用Bounding box regression方法，训练了一个线性回归的模型用来根据pool5的features预测一个新的检测窗口给selective search做region proposal。
 - 语义分割
 
-  1.当前$$O_2P$$—second-order pooling是语义分割领域中最好的系统，他使用CMPC和SVR。
+  1.当前O2P—second-order pooling是语义分割领域中最好的系统，他使用CMPC和SVR。
   
   2.用于语义分割时，R-CNN使用CMPC的region作为输入,计算CNN的特征值。此时分别有三个策略：忽略region的大小和形状，和物体检测时一样，使用wrap之后的region计算，这样可能带来的问题是两个region虽然只有很少的重叠，但是可能会有相似的bounding box；第二种策略，只计算region的前景色，背景色部分设置为0或者均值；第三种策略就是结合前两种策略。
   
-  3.使用R-CNN的输出特征值训练SVR（20个分类）只需要一个多小时，比`$O_2P$`的输出特征值训练要快，另外使用fc6的输出作为SVR的输入能得到更好的结果。
+  3.使用R-CNN的输出特征值训练SVR（20个分类）只需要一个多小时，比O2P的输出特征值训练要快，另外使用fc6的输出作为SVR的输入能得到更好的结果。
 - 总结
 
   本文提出了一个简单的可扩展的物体检测算法，比PASCAL VOC 2012最好成绩要提升了30%。第一点洞察是使用CNN为region proposals提供输入来更好的定位和分割物体；第二点洞察是使用Pretraining + fine-tuning的方法在标注数据不够的情况下也能取得不错的结果。
