@@ -4,6 +4,7 @@
 ## Table of contents
 - [Computer vision related](#computer-vision-related)
   - [R-CNN, UC Berkeley Paper-CVPR14](#rcnn)
+  - [Selective Search for Object Recognition](#UijingsIJCV2013)
 
 ## Contents
 
@@ -102,6 +103,10 @@ R-CNN, UC Berkeley [[Paper-CVPR14]](http://www.cv-foundation.org/openaccess/cont
 - 总结
 
   本文提出了一个简单的可扩展的物体检测算法，比PASCAL VOC 2012最好成绩要提升了30%。第一点洞察是使用CNN为region proposals提供输入来更好的定位和分割物体；第二点洞察是使用Pretraining + fine-tuning的方法在标注数据不够的情况下也能取得不错的结果。
+
+#### UijingsIJCV2013
+Selective Search for Object Recognition [[uijlings_ijcv2013_draft.pdf]](https://ivi.fnwi.uva.nl/isis/publications/2013/UijlingsIJCV2013/UijlingsIJCV2013.pdf)
+- 摘要：
 
 
   
