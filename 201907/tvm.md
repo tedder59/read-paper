@@ -28,6 +28,45 @@
        本文主要的贡献有：我们指出了在多种设备上部署深度学习模型的主要挑战，提出了流程原语（schedule primitives），实现了基于机器学习的自动搜索优化空间的模型，创建了一个端到端的编译和优化栈，能够将Tensorflow， MXNet， Pytorch， Keras， CNTK部署到各种硬件设备中。和手工优化库相比，TVM能够获得1.2x到3.8x的加速比。
 
 ### 概述：
+    TVM的工作流程如下：
+       1. 读取框架的模型作为输入，翻译成计算图表示结构；
+       2. 高层次图结构上的数据流重写，生成优化图；
+       3. 低层次操作模块实现代码优化，使用tensor表达式结构，忽略硬件层次的细节；
+       4. 在给定硬件平台上搜索最优底层实现，并综合这些代码生成部署模块。
+
+<img align="center" src="images/tvm_overview.png">
+
+``` python
+import tvm as t
+
+graph, params = t.frontend.from_keras(keras_model)
+tartget = t.target().cuda()
+graph, lib, params = t.compiler.build(graph, target, params)
+
+import tvm.runtime as runtime
+
+module = runtime.create(graph, lib, runtime.cuda(0))
+module.set_input(**params)
+module.run(data=data_array)
+output = tvm.nd.empty(out_shape, ctx=runtime.cuda())
+module.get_output(0, output)
+
+```
+
+### Section3: 计算图优化
+       计算图表示，节点代表操作（操作对象是张量和输入），边代表节点间的依赖。图层次的优化主要有：操作融合（operator fusion），常量折叠(constant-folding,静态数据操作在编译阶段完成计算，减少节点数量)。同时数据的维度排列顺序也可以调整成设备端最优支持的结构。
+
+#### 操作融合（Operator Fusion）
+    计算图操作可以分成四类：（1）单射结构element-wise，例如add（2）缩减模式Reduction，例如sum（3）复杂的融合结构fuse element-wise，例如conv2d（4）模糊模式opaque，例如sort。
+    1. 多个单射结构可以融合成一个单射结构的操作；
+    2. 缩减模式的操作可以和单射结构的操作融合（例如，scale和sum）；
+    3. conv2d可以融合输出侧的element-wise操作
+<img align="center" src="images/fusion_performance.png">
+
+#### 数据结构变换(Data Layout Transformation)
+       数据结构除了row-major, column-major这种基本结构以外，还需要考虑设备端更复杂的情况，例如某个加速器实现了4x4的矩阵基本运算，那么如果数据按照4x4的分块存储的话，将获得最佳性能。
+<img align="center" src="images/data_layout_transform.png">
+
 
 
 
