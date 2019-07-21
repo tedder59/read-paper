@@ -9,4 +9,5 @@
 
 - CNN framework related
   - [TVM](201907/tvm.md)
+  - [BlazeFace](201907/blazeface.md)
 
