@@ -1,5 +1,5 @@
 ### 标题:
-《A Hardware-Software Blueprint for Flexible Deep Learning Specialization》
+[《A Hardware-Software Blueprint for Flexible Deep Learning Specialization》](papers/blueprint.pdf)
 ### 摘要：
 &emsp;&emsp;专用的深度学习加速器在提供高性能的同时，牺牲了其便利性。面对日益增长的工作量，我们提出了VTA，一个可扩展设计的可编程的深度学习结构模型。VTA非常适合可编程的结构，其中包括两级ISA（Instructioin Set Architecture），和JIT（just-in-time）编译。两级ISA，其中任务ISA负责组织并行运算和内存，微编码ISA负责实现一系列的张量操作。我们使用了即时编译器用来灵活地生成代码和异构执行的运行时系统。
 
