@@ -13,3 +13,4 @@
   - [26ms Inference Time for ResNet-50](201907/26ms.md)
   - [A Hardware-Software Blueprint for Flexible Deep Learning Specialization](201907/blueprint.md)
   - [Automating Generation of Low Precision Deep Learning Operators](201908/aglp.md)
+  - [Relay: A High-Level IR for Deep Learning](201908/relay.md)
